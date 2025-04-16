@@ -1,0 +1,253 @@
+:root {
+  --bg: #f4fff4;
+  --text: #2f5f2f;
+  --accent: #a8e6a3;
+  --border: #90c490;
+  --hover: #e3fbe3;
+  --danger: #f87171;
+  --success: #34d399;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  padding: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1 {
+  text-align: center;
+  color: #1b5e20;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: 20px;
+}
+
+.controls, .add-word, .bulk-input, .quiz-mode {
+  text-align: center;
+  margin: 20px auto;
+}
+
+button {
+  background-color: var(--accent);
+  border: none;
+  padding: 10px 16px;
+  margin: 6px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #1b3c1b;
+  transition: background-color 0.2s ease, transform 0.1s;
+}
+
+button:hover {
+  background-color: #7fdc7f;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+input[type="text"], textarea {
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin: 5px;
+  width: 180px;
+  font-size: 14px;
+}
+
+textarea {
+  width: 90%;
+  height: 120px;
+}
+
+table {
+  width: 95%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+th {
+  background-color: #c9efc9;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: var(--hover);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Quiz styles */
+#quizContainer {
+  background-color: #e6fbe6;
+  padding: 20px;
+  border: 2px dashed var(--accent);
+  width: 60%;
+  margin: 30px auto;
+  border-radius: 12px;
+}
+
+#quizWord {
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#quizInput {
+  width: 60%;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 1em;
+}
+
+#quizResult {
+  font-weight: bold;
+  font-size: 1em;
+  color: var(--danger);
+}
+
+#quizScore {
+  font-weight: bold;
+  font-size: 1em;
+  color: var(--success);
+  margin-top: 10px;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  position: relative;
+  vertical-align: middle;
+}
+.toggle-switch input {
+  display: none;
+}
+.slider {
+  position: absolute;
+  inset: 0;
+  background-color: #ccc;
+  border-radius: 28px;
+  transition: .4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: .4s;
+}
+.toggle-switch input:checked + .slider {
+  background-color: #4caf50;
+}
+.toggle-switch input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* Fade in animation */
+.fade {
+  animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Dark Mode */
+.dark-mode {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+}
+
+.dark-mode table {
+  background-color: #2c2c2c;
+  color: #f0f0f0;
+}
+
+.dark-mode th {
+  background-color: #444;
+}
+
+.dark-mode td {
+  border-color: #555;
+}
+
+.dark-mode input, .dark-mode textarea {
+  background-color: #3c3c3c;
+  color: #fff;
+  border-color: #777;
+}
+
+.dark-mode button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.dark-mode #quizContainer {
+  background-color: #2d2d2d;
+  border-color: #4caf50;
+}
+
+/* Responsive cho iPhone 11 Pro Max và dưới */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  input[type="text"], textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+    margin: 6px 0;
+    font-size: 16px;
+  }
+
+  table {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  #quizContainer {
+    width: 100%;
+    padding: 15px;
+  }
+
+  #quizInput {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  #quizWord {
+    font-size: 1.2em;
+  }
+
+  .add-word, .controls, .bulk-input {
+    padding: 0 10px;
+  }
+}

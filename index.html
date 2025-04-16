@@ -10,13 +10,12 @@
   <h1>📘 Danh sách từ vựng</h1>
 
   <div class="controls">
-    <button onclick="toggleTable()">Ẩn từ vựng</button>
+    <button onclick="toggleTable()">📂 Ẩn từ vựng</button>
     <button onclick="startQuiz()">🧠 Kiểm tra ghi nhớ</button>
     <button onclick="resetTable()">🔁 Làm mới</button>
 
-    <!-- Toggle switch Dark Mode -->
-    <label class="toggle-switch">
-      <input type="checkbox" id="darkModeSwitch" onclick="toggleDarkMode()" />
+    <label class="darkmode-toggle">
+      <input type="checkbox" id="darkModeSwitch" />
       <span class="slider"></span>
     </label>
   </div>
@@ -28,26 +27,26 @@
     <input type="text" id="new-example" placeholder="Ví dụ" />
     <input type="text" id="new-synonym" placeholder="Đồng nghĩa" />
     <input type="text" id="new-antonym" placeholder="Trái nghĩa" />
-    <button onclick="addWord()">Thêm từ</button>
+    <button onclick="addWord()">➕ Thêm từ</button>
   </div>
 
   <div class="bulk-input">
     <button onclick="toggleBulkInput()">📥 Nhập danh sách hàng loạt</button>
-    <div id="bulkInputContainer" class="hidden fade">
+    <div id="bulkInputContainer" class="hidden">
       <textarea id="bulkInput" placeholder='["Từ", "Nghĩa", "Ví dụ", "Syn: ... / Ant: ..."] hoặc ["Từ", "Nghĩa", "Ví dụ", "Đồng nghĩa", "Trái nghĩa"]'></textarea><br/>
       <button onclick="importBulk()">Thêm vào danh sách</button>
     </div>
   </div>
 
-  <div id="tableContainer" class="fade">
+  <div id="tableContainer">
     <table id="vocabTable">
       <thead>
         <tr>
-          <th class="col-word">Từ vựng</th>
-          <th class="col-meaning">Nghĩa</th>
-          <th class="col-example">Ví dụ</th>
-          <th class="col-synonym">Đồng nghĩa</th>
-          <th class="col-antonym">Trái nghĩa</th>
+          <th>Từ vựng</th>
+          <th>Nghĩa</th>
+          <th>Ví dụ</th>
+          <th>Đồng nghĩa</th>
+          <th>Trái nghĩa</th>
           <th>Xóa</th>
         </tr>
       </thead>
@@ -55,7 +54,7 @@
     </table>
   </div>
 
-  <div id="quizContainer" class="hidden fade">
+  <div id="quizContainer" class="hidden">
     <h2>🧠 Flashcard Quiz</h2>
 
     <div class="quiz-mode">
@@ -66,7 +65,7 @@
     <div id="quizCard" class="fade">
       <p id="quizWord">Câu hỏi</p>
       <input type="text" id="quizInput" placeholder="Câu trả lời" />
-      <button onclick="submitQuiz()">Kiểm tra</button>
+      <button onclick="submitQuiz()">✅ Kiểm tra</button>
       <p id="quizResult" role="alert"></p>
       <p id="quizScore"></p>
     </div>

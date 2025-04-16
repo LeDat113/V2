@@ -251,3 +251,8 @@ tr:hover {
     padding: 0 10px;
   }
 }
+
+.speaking-row {
+  background-color: #ffffff; /* Nền sáng */
+  color: #000000; /* Chữ đen để đảm bảo đọc rõ */
+}

@@ -252,7 +252,14 @@ tr:hover {
   }
 }
 
-.speaking-row {
-  background-color: #ffffff; /* Nền sáng */
-  color: #000000; /* Chữ đen để đảm bảo đọc rõ */
+/* Dòng đang phát âm - chế độ dark */
+body.dark-mode .speaking-row {
+  background-color: #f0fff4 !important;
+  color: #000 !important;
+}
+
+/* Dòng đang phát âm - chế độ sáng */
+body.light-mode .speaking-row {
+  background-color: #d1e7dd !important;
+  color: #000 !important;
 }

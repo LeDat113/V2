@@ -17,7 +17,7 @@ function renderTable() {
     row.forEach((cell, i) => {
       const td = document.createElement("td");
       td.className = `col-${["word", "meaning", "example", "synonym", "antonym"][i]}`;
-      td.innerHTML = cell + (i !== 1 ? ` <button onclick="speak('${cell}', this)">🔊</button>` : "");
+      td.innerHTML = cell + (i !== 1 ? ` <button onclick="speak('${cell}')">🔊</button>` : "");
       tr.appendChild(td);
     });
 
@@ -30,7 +30,8 @@ function renderTable() {
 }
 
 function toggleTable() {
-  document.getElementById("tableContainer").classList.toggle("hidden");
+  const table = document.getElementById("tableContainer");
+  table.classList.toggle("hidden");
 }
 
 function addWord() {
@@ -51,8 +52,11 @@ function addWord() {
 }
 
 function clearInputFields() {
-  ["new-word", "new-meaning", "new-example", "new-synonym", "new-antonym"]
-    .forEach(id => document.getElementById(id).value = "");
+  document.getElementById("new-word").value = "";
+  document.getElementById("new-meaning").value = "";
+  document.getElementById("new-example").value = "";
+  document.getElementById("new-synonym").value = "";
+  document.getElementById("new-antonym").value = "";
 }
 
 function deleteWord(index) {
@@ -62,19 +66,14 @@ function deleteWord(index) {
   }
 }
 
-function speak(text, buttonElement) {
-  const row = buttonElement.closest("tr");
-  row.classList.add("speaking");
+function speak(text) {
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "en-US";
-  utterance.onend = () => row.classList.remove("speaking");
   speechSynthesis.speak(utterance);
 }
 
 function toggleDarkMode() {
-  const isDark = document.body.classList.toggle("dark-mode");
-  localStorage.setItem("darkMode", isDark);
-  document.getElementById("darkModeSwitch").checked = isDark;
+  document.body.classList.toggle("dark-mode");
 }
 
 function resetTable() {
@@ -85,7 +84,8 @@ function resetTable() {
 }
 
 function toggleBulkInput() {
-  document.getElementById("bulkInputContainer").classList.toggle("hidden");
+  const box = document.getElementById("bulkInputContainer");
+  box.classList.toggle("hidden");
 }
 
 function importBulk() {
@@ -126,6 +126,7 @@ function startQuiz() {
   if (vocabData.length === 0) return;
   quizMode = document.querySelector("input[name='quizMode']:checked").value;
   correctAnswers = 0;
+  currentQuizIndex = 0;
   usedQuizIndexes.clear();
   document.getElementById("quizContainer").classList.remove("hidden");
   showNextQuiz();
@@ -152,7 +153,12 @@ function showNextQuiz() {
   const result = document.getElementById("quizResult");
   const score = document.getElementById("quizScore");
 
-  quizWord.innerText = quizMode === "wordToMeaning" ? `Từ: ${current[0]}` : `Nghĩa: ${current[1]}`;
+  if (quizMode === "wordToMeaning") {
+    quizWord.innerText = `Từ: ${current[0]}`;
+  } else {
+    quizWord.innerText = `Nghĩa: ${current[1]}`;
+  }
+
   input.value = "";
   input.focus();
   result.innerText = "";
@@ -166,27 +172,41 @@ function submitQuiz() {
   const result = document.getElementById("quizResult");
   const score = document.getElementById("quizScore");
 
+  const table = document.getElementById("vocabTable");
+  const row = table.rows[currentQuizIndex + 1]; // +1 vì row[0] là <thead>
+
+  // Xoá class cũ nếu có
+  row?.classList.remove("correct-row", "wrong-row");
+
   if (input === correct) {
     result.innerText = "✅ Chính xác!";
     correctAnswers++;
+    row?.classList.add("correct-row");
   } else {
     result.innerText = `❌ Sai. Đúng là: ${correct}`;
+    row?.classList.add("wrong-row");
   }
 
   score.innerText = `Đúng: ${correctAnswers}/${vocabData.length}`;
-  setTimeout(showNextQuiz, 1500);
+
+  // Reset màu sau 1.5s và chuyển câu tiếp
+  setTimeout(() => {
+    row?.classList.remove("correct-row", "wrong-row");
+    showNextQuiz();
+  }, 1500);
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  renderTable();
+function toggleAddWord() {
+  document.getElementById("addWordContainer").classList.toggle("hidden");
+}
 
+// Khi đổi chế độ quiz → reset lại
+window.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('input[name="quizMode"]').forEach((radio) => {
-    radio.addEventListener("change", () => startQuiz());
+    radio.addEventListener("change", () => {
+      startQuiz();
+    });
   });
 
-  // Load dark mode trạng thái đã lưu
-  if (localStorage.getItem("darkMode") === "true") {
-    document.body.classList.add("dark-mode");
-    document.getElementById("darkModeSwitch").checked = true;
-  }
+  renderTable();
 });

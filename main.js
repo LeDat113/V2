@@ -47,6 +47,7 @@ function addWord() {
   }
 
   vocabData.push([word, meaning, example, synonym, antonym]);
+  localStorage.setItem("vocabData", JSON.stringify(vocabData));
   clearInputFields();
   renderTable();
 }
@@ -62,6 +63,7 @@ function clearInputFields() {
 function deleteWord(index) {
   if (confirm("Bạn có chắc muốn xóa từ này không?")) {
     vocabData.splice(index, 1);
+    localStorage.setItem("vocabData", JSON.stringify(vocabData));
     renderTable();
   }
 }
@@ -112,6 +114,7 @@ function importBulk() {
 
     if (added > 0) {
       document.getElementById("bulkInput").value = "";
+      localStorage.setItem("vocabData", JSON.stringify(vocabData));
       renderTable();
       alert(`Đã thêm ${added} từ.`);
     } else {
@@ -208,5 +211,25 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Lấy từ localStorage nếu có
+  const stored = localStorage.getItem("vocabData");
+  if (stored) {
+    try {
+      vocabData = JSON.parse(stored);
+    } catch (e) {
+      console.error("Dữ liệu vocab bị lỗi JSON.");
+    }
+  }
+
   renderTable();
 });
+
+function clearStorage() {
+  if (confirm("Bạn có chắc muốn xoá toàn bộ dữ liệu đã lưu không?")) {
+    localStorage.removeItem("vocabData");
+    vocabData = [];
+    renderTable();
+    alert("Đã xoá toàn bộ dữ liệu từ vựng.");
+  }
+}
+

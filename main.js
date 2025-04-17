@@ -1,7 +1,22 @@
-let vocabData = [
-  ["Pollution", "Ô nhiễm", "Air pollution is a serious problem.", "contamination", "purification"],
-  ["Deforestation", "Phá rừng", "Deforestation causes biodiversity loss.", "forest clearance", "afforestation"]
-];
+let vocabData = [];
+
+const stored = localStorage.getItem("vocabData");
+if (stored) {
+  try {
+    vocabData = JSON.parse(stored);
+  } catch (e) {
+    console.warn("Dữ liệu localStorage bị lỗi, dùng dữ liệu mặc định.");
+    vocabData = [
+      ["Pollution", "Ô nhiễm", "Air pollution is a serious problem.", "contamination", "purification"],
+      ["Deforestation", "Phá rừng", "Deforestation causes biodiversity loss.", "forest clearance", "afforestation"]
+    ];
+  }
+} else {
+  vocabData = [
+    ["Pollution", "Ô nhiễm", "Air pollution is a serious problem.", "contamination", "purification"],
+    ["Deforestation", "Phá rừng", "Deforestation causes biodiversity loss.", "forest clearance", "afforestation"]
+  ];
+}
 
 let currentQuizIndex = 0;
 let quizMode = "wordToMeaning";

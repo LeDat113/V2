@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>🌱 Từ vựng</title>
+  <title>🌱 Từ vựng </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -10,25 +10,25 @@
   <h1>📘 Danh sách từ vựng</h1>
 
   <div class="controls">
-    <button onclick="toggleTable()">📂 Ẩn từ vựng</button>
+    <button onclick="toggleTable()">Ẩn từ vựng</button>
     <button onclick="startQuiz()">🧠 Kiểm tra ghi nhớ</button>
     <button onclick="resetTable()">🔁 Làm mới</button>
-
-    <label class="darkmode-toggle">
-      <input type="checkbox" id="darkModeSwitch" />
-      <span class="slider"></span>
-    </label>
+    <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
   </div>
 
-  <div class="add-word">
+  <div class="add-word-toggle">
+    <button onclick="toggleAddWord()">📂 Mở menu thêm từ</button>
+  </div>
+  
+  <div id="addWordContainer" class="add-word hidden">
     <h3>➕ Thêm từ mới</h3>
     <input type="text" id="new-word" placeholder="Từ vựng" />
     <input type="text" id="new-meaning" placeholder="Nghĩa" />
     <input type="text" id="new-example" placeholder="Ví dụ" />
     <input type="text" id="new-synonym" placeholder="Đồng nghĩa" />
     <input type="text" id="new-antonym" placeholder="Trái nghĩa" />
-    <button onclick="addWord()">➕ Thêm từ</button>
-  </div>
+    <button onclick="addWord()">📝 Thêm từ</button>
+  </div>  
 
   <div class="bulk-input">
     <button onclick="toggleBulkInput()">📥 Nhập danh sách hàng loạt</button>
@@ -42,11 +42,11 @@
     <table id="vocabTable">
       <thead>
         <tr>
-          <th>Từ vựng</th>
-          <th>Nghĩa</th>
-          <th>Ví dụ</th>
-          <th>Đồng nghĩa</th>
-          <th>Trái nghĩa</th>
+          <th class="col-word">Từ vựng</th>
+          <th class="col-meaning">Nghĩa</th>
+          <th class="col-example">Ví dụ</th>
+          <th class="col-synonym">Đồng nghĩa</th>
+          <th class="col-antonym">Trái nghĩa</th>
           <th>Xóa</th>
         </tr>
       </thead>
@@ -58,15 +58,15 @@
     <h2>🧠 Flashcard Quiz</h2>
 
     <div class="quiz-mode">
-      <label><input type="radio" name="quizMode" value="wordToMeaning" checked /> Từ → Nghĩa</label>
-      <label><input type="radio" name="quizMode" value="meaningToWord" /> Nghĩa → Từ</label>
+      <label><input type="radio" name="quizMode" value="wordToMeaning" checked /> Hiện từ → Nhập nghĩa</label>
+      <label><input type="radio" name="quizMode" value="meaningToWord" /> Hiện nghĩa → Nhập từ</label>
     </div>
 
-    <div id="quizCard" class="fade">
+    <div id="quizCard">
       <p id="quizWord">Câu hỏi</p>
       <input type="text" id="quizInput" placeholder="Câu trả lời" />
-      <button onclick="submitQuiz()">✅ Kiểm tra</button>
-      <p id="quizResult" role="alert"></p>
+      <button onclick="submitQuiz()">Kiểm tra</button>
+      <p id="quizResult"></p>
       <p id="quizScore"></p>
     </div>
   </div>

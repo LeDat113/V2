@@ -17,7 +17,7 @@ function renderTable() {
     row.forEach((cell, i) => {
       const td = document.createElement("td");
       td.className = `col-${["word", "meaning", "example", "synonym", "antonym"][i]}`;
-      td.innerHTML = cell + (i !== 1 ? ` <button onclick="speak('${cell}')">🔊</button>` : "");
+      td.innerHTML = cell + (i !== 1 ? ` <button onclick="speak('${cell}', this)">🔊</button>` : "");
       tr.appendChild(td);
     });
 
@@ -30,8 +30,7 @@ function renderTable() {
 }
 
 function toggleTable() {
-  const table = document.getElementById("tableContainer");
-  table.classList.toggle("hidden");
+  document.getElementById("tableContainer").classList.toggle("hidden");
 }
 
 function addWord() {
@@ -63,16 +62,19 @@ function deleteWord(index) {
   }
 }
 
-function speak(text) {
+function speak(text, buttonElement) {
+  const row = buttonElement.closest("tr");
+  row.classList.add("speaking");
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "en-US";
+  utterance.onend = () => row.classList.remove("speaking");
   speechSynthesis.speak(utterance);
 }
 
 function toggleDarkMode() {
   const isDark = document.body.classList.toggle("dark-mode");
-  document.getElementById("darkModeSwitch").checked = isDark;
   localStorage.setItem("darkMode", isDark);
+  document.getElementById("darkModeSwitch").checked = isDark;
 }
 
 function resetTable() {
@@ -83,19 +85,7 @@ function resetTable() {
 }
 
 function toggleBulkInput() {
-  const box = document.getElementById("bulkInputContainer");
-  box.classList.toggle("hidden");
-}
-
-function parseBulkRow(row) {
-  if (row.length === 4) {
-    const synMatch = row[3].match(/Syn:\s*([^/]+)/i);
-    const antMatch = row[3].match(/Ant:\s*(.+)/i);
-    return [row[0], row[1], row[2], synMatch?.[1]?.trim() || "", antMatch?.[1]?.trim() || ""];
-  } else if (row.length === 5) {
-    return row;
-  }
-  return null;
+  document.getElementById("bulkInputContainer").classList.toggle("hidden");
 }
 
 function importBulk() {
@@ -105,10 +95,18 @@ function importBulk() {
     let added = 0;
 
     parsed.forEach(row => {
-      const formatted = parseBulkRow(row);
-      if (formatted) {
-        vocabData.push(formatted);
-        added++;
+      if (Array.isArray(row)) {
+        if (row.length === 4) {
+          const synMatch = row[3].match(/Syn:\s*([^/]+)/i);
+          const antMatch = row[3].match(/Ant:\s*(.+)/i);
+          const syn = synMatch ? synMatch[1].trim() : "";
+          const ant = antMatch ? antMatch[1].trim() : "";
+          vocabData.push([row[0], row[1], row[2], syn, ant]);
+          added++;
+        } else if (row.length === 5) {
+          vocabData.push(row);
+          added++;
+        }
       }
     });
 
@@ -154,16 +152,7 @@ function showNextQuiz() {
   const result = document.getElementById("quizResult");
   const score = document.getElementById("quizScore");
 
-  document.getElementById("quizCard").classList.remove("fade");
-  void document.getElementById("quizCard").offsetWidth;
-  document.getElementById("quizCard").classList.add("fade");
-
-  if (quizMode === "wordToMeaning") {
-    quizWord.innerText = `Từ: ${current[0]}`;
-  } else {
-    quizWord.innerText = `Nghĩa: ${current[1]}`;
-  }
-
+  quizWord.innerText = quizMode === "wordToMeaning" ? `Từ: ${current[0]}` : `Nghĩa: ${current[1]}`;
   input.value = "";
   input.focus();
   result.innerText = "";
@@ -189,16 +178,15 @@ function submitQuiz() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  // Quiz mode change triggers reset
+  renderTable();
+
   document.querySelectorAll('input[name="quizMode"]').forEach((radio) => {
     radio.addEventListener("change", () => startQuiz());
   });
 
-  // Dark mode on load
+  // Load dark mode trạng thái đã lưu
   if (localStorage.getItem("darkMode") === "true") {
     document.body.classList.add("dark-mode");
     document.getElementById("darkModeSwitch").checked = true;
   }
-
-  renderTable();
 });
